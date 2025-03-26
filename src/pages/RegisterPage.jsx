@@ -13,17 +13,16 @@ const schema = z.object({
 
 const RegisterPage = () => {
 
-    const {mutate, isLoading, error} = useRegister();
-
-    console.log(mutate, isLoading, error)
+    const {mutateAsync, isLoading} = useRegister();
 
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        const res = await mutateAsync(data)
+        console.log(res);
     }
 
     return (
@@ -73,7 +72,7 @@ const RegisterPage = () => {
                             {errors.password && <Text color="red.500">{errors.password.message}</Text>}
                         </div>
 
-                        <Button type="submit" colorScheme="teal" width="full" mt={4}>
+                        <Button loading={isLoading} loadingText="Zarejestruj się" type="submit" colorScheme="teal" width="full" mt={4}>
                             Zarejestruj się
                         </Button>
                     </Stack>
@@ -81,7 +80,7 @@ const RegisterPage = () => {
             </Box>
             <Text fontSize="md" color="gray.300">
                 Masz już konto?
-                <Text display="inline" color="white" fontWeight="bold">
+                <Text as="span" display="inline" color="white" fontWeight="bold">
                    <NavLink  to="/login"> Zaloguj się</NavLink>
                 </Text>           
             </Text>

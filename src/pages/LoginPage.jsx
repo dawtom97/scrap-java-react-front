@@ -68,11 +68,11 @@ const LoginPage = () => {
 
             <Text fontSize="md" color="gray.300">
                 Nie masz konta?
-                <Text display="inline" color="white" fontWeight="bold">
+                <Text as="span" display="inline" color="white" fontWeight="bold">
                     <NavLink to="/register"> Zarejestruj się</NavLink>
                 </Text>
             </Text>
-            
+
         </Flex>
     )
 }
