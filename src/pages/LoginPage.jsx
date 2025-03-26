@@ -2,10 +2,10 @@ import { Button, Input, Stack, Flex, Box, Text } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
+import { NavLink } from "react-router-dom";
 
 const schema = z.object({
-    name: z.string().min(1, "Nazwa użytkownika jest wymagana"),
-    email: z.string().email("Nieprawidłowy adres email"),
+    username: z.string().min(1, "Nazwa użytkownika jest wymagana"),
     password: z.string().min(6, "Hasło musi mieć co najmniej 6 znaków"),
 })
 
@@ -20,6 +20,8 @@ const LoginPage = () => {
 
     return (
         <Flex
+            direction="column"
+            gap="6"
             bg="gray.900"
             justify="center"
             align="center"
@@ -36,10 +38,10 @@ const LoginPage = () => {
             >
                 <Stack spacing={4}>
                     <Text fontSize="2xl" fontWeight="bold">
-                        Rejestracja
+                        Logowanie
                     </Text>
                     <Text fontSize="sm" color="gray.300">
-                        Załóż konto w naszym systemie
+                        Zaloguj się na stronie
                     </Text>
                 </Stack>
 
@@ -47,14 +49,8 @@ const LoginPage = () => {
                     <Stack spacing={4} mt={4}>
                         <div>
                             <label htmlFor="name">Nazwa użytkownika</label>
-                            <Input id="name" {...register("name")} />
-                            {errors.name && <Text color="red.500">{errors.name.message}</Text>}
-                        </div>
-
-                        <div>
-                            <label htmlFor="email">Adres email</label>
-                            <Input id="email" type="email" {...register("email")} />
-                            {errors.email && <Text color="red.500">{errors.email.message}</Text>}
+                            <Input id="name" {...register("username")} />
+                            {errors.username && <Text color="red.500">{errors.username.message}</Text>}
                         </div>
 
                         <div>
@@ -64,14 +60,21 @@ const LoginPage = () => {
                         </div>
 
                         <Button type="submit" colorScheme="teal" width="full" mt={4}>
-                            Zarejestruj się
+                            Zaloguj się
                         </Button>
                     </Stack>
                 </form>
             </Box>
+
+            <Text fontSize="md" color="gray.300">
+                Nie masz konta?
+                <Text display="inline" color="white" fontWeight="bold">
+                    <NavLink to="/register"> Zarejestruj się</NavLink>
+                </Text>
+            </Text>
+            
         </Flex>
     )
 }
 
 export default LoginPage
-
