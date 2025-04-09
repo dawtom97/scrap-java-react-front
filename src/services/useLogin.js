@@ -2,12 +2,13 @@ import { useMutation } from "react-query";
 import axiosInstance from "./axiosInstance";
 import { toaster } from "../components/ui/toaster";
 
-
-const useRegister = () => {
+const useLogin = () => {
   return useMutation(
     async (body) => {
-      const response = await axiosInstance.post("/auth/register", body);
-      return response.data;
+      const response = await axiosInstance.post("/auth/login", body);
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      return data
     },
     {
       onSuccess: (data) => {
@@ -16,13 +17,14 @@ const useRegister = () => {
           type: data.status,
         });
       },
-      onError: (error) => {
+      onError: (err) => {
+        const res = err.response.data
         toaster.create({
-          title: error.response?.data?.message,
-          type: error.response?.data?.status,
+          title: res.message,
+          type: res.status
         });
       },
     }
   );
 };
-export default useRegister;
+export default useLogin;

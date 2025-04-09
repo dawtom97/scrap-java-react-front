@@ -2,7 +2,8 @@ import { Button, Input, Stack, Flex, Box, Text } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import useLogin from "../services/useLogin";
 
 const schema = z.object({
     username: z.string().min(1, "Nazwa użytkownika jest wymagana"),
@@ -10,13 +11,20 @@ const schema = z.object({
 })
 
 const LoginPage = () => {
+
+    const { mutateAsync, isLoading } = useLogin();
+    const navigate = useNavigate();
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        await mutateAsync(data)
+        navigate("/")
     }
+
+
 
     return (
         <Flex
@@ -59,7 +67,7 @@ const LoginPage = () => {
                             {errors.password && <Text color="red.500">{errors.password.message}</Text>}
                         </div>
 
-                        <Button type="submit" colorScheme="teal" width="full" mt={4}>
+                        <Button loading={isLoading} type="submit" colorScheme="teal" width="full" mt={4}>
                             Zaloguj się
                         </Button>
                     </Stack>

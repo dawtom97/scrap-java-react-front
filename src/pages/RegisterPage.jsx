@@ -2,8 +2,10 @@ import { Button, Input, Stack, Flex, Box, Text } from "@chakra-ui/react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useRegister from "../services/useRegister";
+import { toaster } from "../components/ui/toaster";
+import { useEffect } from "react";
 
 const schema = z.object({
     username: z.string().min(1, "Nazwa użytkownika jest wymagana"),
@@ -13,16 +15,28 @@ const schema = z.object({
 
 const RegisterPage = () => {
 
-    const {mutateAsync, isLoading} = useRegister();
-
+    const { mutateAsync, isLoading } = useRegister();
+    const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
     })
 
+    useEffect(() => {
+        const values = Object.entries(errors)
+        values.map((val,index) => {
+            setTimeout(() => {
+                toaster.create({
+                    title: val[1].message,
+                    type: "error",
+                });
+            }, index * 100);
+        })
+    }, [errors]);
+
     const onSubmit = async (data) => {
-        const res = await mutateAsync(data)
-        console.log(res);
+        await mutateAsync(data)
+        navigate("/login")
     }
 
     return (
@@ -81,8 +95,8 @@ const RegisterPage = () => {
             <Text fontSize="md" color="gray.300">
                 Masz już konto?
                 <Text as="span" display="inline" color="white" fontWeight="bold">
-                   <NavLink  to="/login"> Zaloguj się</NavLink>
-                </Text>           
+                    <NavLink to="/login"> Zaloguj się</NavLink>
+                </Text>
             </Text>
         </Flex>
     )
