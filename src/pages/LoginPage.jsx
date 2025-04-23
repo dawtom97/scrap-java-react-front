@@ -24,8 +24,6 @@ const LoginPage = () => {
         navigate("/")
     }
 
-
-
     return (
         <Flex
             direction="column"

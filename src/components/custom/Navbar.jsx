@@ -25,16 +25,17 @@ const Navbar = () => {
         <Spacer />
 
         <Flex gap={4}>
-          <NavLink to="/login">
+          <NavLink to="/">
             <Link fontSize="lg" _hover={{ textDecoration: "underline", color: "teal.200" }} color="white">
-              Login
+              Panel
             </Link>
           </NavLink>
-          <NavLink to="/register">
+          <NavLink to="/search">
             <Link fontSize="lg" _hover={{ textDecoration: "underline", color: "teal.200" }} color="white">
-              Register
+              Wyszukiwarka
             </Link>
           </NavLink>
+
         </Flex>
 
         <Spacer />
